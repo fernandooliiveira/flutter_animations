@@ -1,0 +1,53 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_animation/global/standard.scaffold.dart';
+
+class AnimatedIconPage extends StatefulWidget {
+  const AnimatedIconPage({Key? key}) : super(key: key);
+
+  @override
+  State<AnimatedIconPage> createState() => _AnimatedIconPageState();
+}
+
+class _AnimatedIconPageState extends State<AnimatedIconPage> with TickerProviderStateMixin {
+  bool _isPlay = false;
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    _controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StandardScaffold(
+        widget: Center(
+      child: GestureDetector(
+        onTap: () {
+          if (!_isPlay) {
+            _controller.forward();
+            _isPlay = true;
+          } else {
+            _controller.reverse();
+            _isPlay = false;
+          }
+        },
+        child: AnimatedIcon(
+          icon: AnimatedIcons.play_pause,
+          progress: _controller,
+          size: 100,
+          color: Colors.blueAccent,
+        ),
+      ),
+    ));
+  }
+}
